@@ -6,10 +6,18 @@ async function buttonEventListener() {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     chrome.scripting.executeScript({
         target: {tabId: tab.id},
-        func: printHi
+        func: findInputField
     });
 }
 
-function printHi() {
-    console.log("hiiii!");
+function findInputField() {
+    function printValue(event) {
+        console.log(event.target);
+        console.log(event.target.value);
+    };
+
+    const inputFields = document.querySelectorAll("input");  // "input[type=\"password\"]"
+    inputFields.forEach((ele) => {
+        ele.addEventListener("change", printValue);
+    });
 }

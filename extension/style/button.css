@@ -1,0 +1,16 @@
+button {
+    border: grey 1px solid;
+    border-radius: 4px;
+    font: inherit;
+    background-color: rgb(220, 220, 220);
+
+    box-shadow: 0px 2px 4px 2px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background-color: rgb(200, 200, 200);
+}
+
+button:active {
+    background-color: rgb(240, 240, 240);
+}

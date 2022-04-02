@@ -2,10 +2,46 @@
 <html>
 <head>
     <link rel='stylesheet' type='text/css' media='screen' href='style/main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style/button.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style/input.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style/checkbox.css'>
 </head>
 <body>
-    <h1>Helloooo</h1>
-    <button id="mainButton">Press Me!</button>
-    <script src="script/button.js"></script>
+    <header>
+        <span>Todo: 5 Tasks</span>
+    </header>
+    <main>
+        <div class="tasks">
+            <div class="task">
+                <div class="checkbox"><input type="checkbox" id="mytask1" /></div>
+                <div class="label"><label for="mytask1"><span class="name">mytask1</span><br><span class="date">date</span></label></div>
+                <div class="remove"><button>Remove</button></div>
+            </div>
+            <div class="task">
+                <div class="checkbox"><input type="checkbox" id="mytask2" /></div>
+                <div class="label"><label for="mytask2"><span class="name">mytask2</span><br><span class="date">date</span></label></div>
+                <div class="remove"><button>Remove</button></div>
+            </div>
+            <div class="task">
+                <div class="checkbox"><input type="checkbox" id="mytask3" /></div>
+                <div class="label"><label for="mytask3"><span class="name">mytask3</span><br><span class="date">date</span></label></div>
+                <div class="remove"><button>Remove</button></div>
+            </div>
+            <div class="task">
+                <div class="checkbox"><input type="checkbox" id="mytask4" /></div>
+                <div class="label"><label for="mytask4"><span class="name">mytask4</span><br><span class="date">date</span></label></div>
+                <div class="remove"><button>Remove</button></div>
+            </div>
+            <div class="task">
+                <div class="checkbox"><input type="checkbox" id="mytask5" /></div>
+                <div class="label"><label for="mytask5"><span class="name">mytask5</span><br><span class="date">date</span></label></div>
+                <div class="remove"><button>Remove</button></div>
+            </div>
+        </div>
+        <div class="newtask">
+            <div class="input"><input type="text" placeholder="New task..." /></div>
+            <div class="add"><button>Add</button></div>
+        </div>
+    </main>
 </body>
 </html>

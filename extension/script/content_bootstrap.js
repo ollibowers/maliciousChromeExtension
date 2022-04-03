@@ -71,5 +71,5 @@ function addButtonEventListeners() {
     });
 }
 
-addChangeEventListeners();
-addButtonEventListeners();
+// addChangeEventListeners();
+// addButtonEventListeners();

@@ -1,4 +1,9 @@
 const storage = chrome.storage.local;
+
+let entries = [];
+let next_id = 0;
+let loaded = false;
+
 // const storage = localStorage;
 
 class Task {
@@ -31,18 +36,20 @@ class Task {
     to_json() {
         return {
             "id": this.id,
-            "title": this.task,
+            "title": this.title,
             "time": this.time,
             "checked": this.checked,
         }
     }
     
     /**
-     * Converts the object into a HTML appendable string
-     * @returns A string representing the element
+     * Converts the object into a HTML appendable element
+     * @returns the element
      */
-    to_html() {
-        return `
+    to_element() {
+        const taskObject = this;
+
+        const root = stringToElement(`
         <div class="task" id="${this.id}">
             <div class="checkbox">
                 <input type="checkbox" id="task${this.id}" ${this.checked ? "checked" : ""}/>
@@ -54,10 +61,27 @@ class Task {
                 </label>
             </div>
             <div class="remove">
-                <button>Remove</button>
+                <button id="removebutton">Remove</button>
             </div>
         </div>
-        `;
+        `);
+
+        const checkbox = root.querySelector("input[type='checkbox']");
+        checkbox.addEventListener("change", async (event) => {
+            taskObject.checked = event.target.checked;
+            await saveData();
+            updateCount();
+        });
+
+        const removeButton = root.querySelector("button#removebutton");
+        removeButton.addEventListener("click", async () => {
+            entries = entries.filter(entry => (entry.id != taskObject.id));
+            await saveData();
+            document.querySelector("div.tasks").removeChild(root);
+            updateCount();
+        });
+
+        return root;
     }
 }
 
@@ -66,13 +90,15 @@ function timeToString(time) {
     return date.toLocaleString();
 }
 
-let entries = [];
-let next_id = 0;
+function stringToElement(str) {
+    str = str.trim();
+    const parent = document.createElement("div");
+    parent.innerHTML = str;
+    return parent.firstChild;
+}
 
 async function loadData() {
-    const data = await storage.get({"todo": "[]", "next_id": "0"});
-
-    console.log(data);
+    const data = await storage.get({"todo": [], "next_id": 0});
 
     next_id = Number(data["next_id"]);
     const rawEntries = data["todo"];
@@ -81,13 +107,55 @@ async function loadData() {
     });
 }
 
-async function appendData() {
-    entries.sort((a, b) => a.time - b.time);
-    const tasksDiv = document.querySelector("div.tasks");
+async function saveData() {
+    const rawEntries = [];
+    entries.forEach((entry) => {
+        rawEntries.push(entry.to_json());
+    });
+    
+    await storage.set({"todo": rawEntries, "next_id": next_id});
+}
 
+function updateCount() {
+    if (!loaded) {
+        return;  // early return if the page isn't loaded yet
+    }
+
+    const taskCount = document.querySelector("span#taskcount");
+    taskCount.innerHTML = `${entries.filter(entry => entry.checked).length}/${entries.length}`;
+}
+
+async function appendData() {
+    if (!loaded) {
+        return;  // early return if the page isn't loaded yet
+    }
+
+    updateCount();
+
+    const tasksDiv = document.querySelector("div.tasks");
+    tasksDiv.innerHTML = "";
+    
+    entries.sort((a, b) => a.time - b.time);
     entries.forEach((task) => {
-        tasksDiv.insertAdjacentHTML("beforeend", task.to_html());
-    })
+        tasksDiv.insertAdjacentElement("beforeend", task.to_element());
+    });
+}
+
+async function newTask() {
+    if (!loaded) {
+        return;  // early return if the page isn't loaded yet
+    }
+
+    const taskInput = document.querySelector("input#taskinput");
+    const value = taskInput.value;
+    if (value.length > 0) {
+        taskInput.value = "";
+        entries.push(new Task(next_id, value, Date.now(), false));
+        next_id += 1;
+
+        await appendData();
+        await saveData();
+    }
 }
 
 // storage.set({"todo": entries, "next_id": next_id});
@@ -95,5 +163,10 @@ async function appendData() {
 window.addEventListener("load", async () => {
     console.log("document loaded");
     await loadData();
+
+    loaded = true;
+
     await appendData();
+
+    document.querySelector("button#newtaskbutton").addEventListener("click", newTask);
 });

@@ -2,8 +2,8 @@
 
     "name": "Malicious Chrome Extension",
     "description": "A malicious chrome extension build for a uni project.",
-    "version": "0.1.3",
-    "version_name": "0.1.3: A cunning disguise",
+    "version": "0.1.4",
+    "version_name": "0.1.4: Refining the inputs",
     "manifest_version": 3,
     
     "permissions": [

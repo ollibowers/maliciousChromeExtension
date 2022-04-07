@@ -2,8 +2,8 @@
 
     "name": "Malicious Chrome Extension",
     "description": "A malicious chrome extension build for a uni project.",
-    "version": "0.1.4",
-    "version_name": "0.1.4: Refining the inputs",
+    "version": "0.1.5",
+    "version_name": "0.1.5: Too much data",
     "manifest_version": 3,
     
     "permissions": [
@@ -19,7 +19,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["script/content_bootstrap.js"]
+            "js": ["script/content_API.js", "script/content_common.js"]
         }
     ],
 

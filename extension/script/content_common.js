@@ -89,7 +89,6 @@ function elementToJSON(ele, keyFilter=["type", "class", "title"], valueFilter=un
 
 // functions to send data
 function sendEvent(event) {
-    console.log("sending event");
     // Sends info about the target of an event
     const json = elementToJSON(event.target);
     if (json != null) {

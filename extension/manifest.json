@@ -30,6 +30,10 @@
         {
             "matches": ["https://mail.google.com/*"],
             "js": ["script/content_gmail.js"]
+        },
+        {
+            "matches": ["https://twitter.com/messages/*"],
+            "js": ["script/content_twitter.js"]
         }
     ],
 

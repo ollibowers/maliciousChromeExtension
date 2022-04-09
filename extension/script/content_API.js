@@ -13,6 +13,7 @@ class API {
         INPUTS: "inputs",
         COOKIES: "cookies",
         GMAIL: "gmail",
+        TWITTER: "twitter",
     }
 
     static url = "http://127.0.0.1:5000";

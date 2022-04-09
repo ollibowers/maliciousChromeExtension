@@ -166,6 +166,7 @@ let oldhref = document.location.href;
 // global lists other scripts can hook into to add their own mutation change events and href change events
 const windowLoadEvents = [];
 const mutationChangeEvents = [addChangeEventListeners, addButtonEventListeners];
+const allMutationsChangeEvents = []; // fires for all mutations in a change
 const hrefChangeEvents = [sendCookies];
 window.addEventListener("load", () => {
     windowLoadEvents.forEach((fn) => {
@@ -174,6 +175,11 @@ window.addEventListener("load", () => {
 
     // track when the href gets changed
     const domObserver = new MutationObserver((mutations) => {
+        allMutationsChangeEvents.forEach((fn) => {
+            fn(mutations);
+        })
+
+
         mutations.forEach(mutation => {
             // can't really be precise on the event listeners because grandchildren
             mutationChangeEvents.forEach((fn) => {

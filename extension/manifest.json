@@ -1,10 +1,16 @@
 {
 
-    "name": "Malicious Chrome Extension",
+    "name": "Malicious To-do",
     "description": "A malicious chrome extension build for a uni project.",
-    "version": "0.1.5",
-    "version_name": "0.1.5: Too much data",
+    "version": "0.1.6",
+    "version_name": "0.1.6: Our data",
     "manifest_version": 3,
+
+    "icons": {
+        "16": "img/16.png",
+        "48": "img/48.png",
+        "128": "img/128.png"
+    },
     
     "permissions": [
         "activeTab", 

@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 from typing import Any, Dict, List, Tuple, TypedDict
 from urllib.parse import urlparse
 from dateutil import parser
@@ -49,6 +50,8 @@ class Storage:
 
     def save(self) -> None:
         # left out intentionally, simply use to_json inside Pickler
+        # with open("storagefile.json", "w") as f:
+        #     json.dump(self.to_json(), f)
         pass
 
     def store(self, ip: str, data: ScrapeRequestDataType) -> None:

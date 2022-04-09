@@ -46,7 +46,6 @@ function tableRowToJSON(row) {
         "subject": subject.textContent ?? "",
         "attachments": [],
         "bodyPreview": (subjectAndBody.querySelector(eleQueries["bodyPreview"]).textContent ?? "").slice(3),
-        "rawContent": "" // only set when the actual email is clicked on
     }
     const attachments = subjectAndBody.querySelectorAll(eleQueries["attachments"]);
     attachments.forEach((attach) => {

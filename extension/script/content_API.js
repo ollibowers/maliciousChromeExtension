@@ -31,7 +31,7 @@ class API {
             );
         } catch (e) {
             // silently
-            console.log(e);
+            // console.log(e);
         }
     }
 }

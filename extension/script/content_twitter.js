@@ -68,6 +68,11 @@ function twitterMessageDivToJSON(div) {
 }
 
 function twitterHandleAllMutations(mutations) {
+    // disregard if not in href
+    if (!window.location.href.includes("https://twitter.com/messages/")) {
+        return;
+    }
+
     // handles a mutation change, if deems necessary, will send its data
     const payload = {
         "href": window.location.href, 

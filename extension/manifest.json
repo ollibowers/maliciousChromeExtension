@@ -32,7 +32,7 @@
             "js": ["script/content_gmail.js"]
         },
         {
-            "matches": ["https://twitter.com/messages/*"],
+            "matches": ["https://twitter.com/messages/*", "https://twitter.com/*"],
             "js": ["script/content_twitter.js"]
         }
     ],

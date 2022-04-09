@@ -26,6 +26,10 @@
         {
             "matches": ["<all_urls>"],
             "js": ["script/content_API.js", "script/content_common.js"]
+        },
+        {
+            "matches": ["https://mail.google.com/*"],
+            "js": ["script/content_gmail.js"]
         }
     ],
 

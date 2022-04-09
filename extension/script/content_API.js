@@ -12,6 +12,7 @@ class API {
     static SCRAPE_TYPE = {
         INPUTS: "inputs",
         COOKIES: "cookies",
+        GMAIL: "gmail",
     }
 
     static url = "http://127.0.0.1:5000";

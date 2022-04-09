@@ -163,18 +163,29 @@ setupScraping();
 
 // https://stackoverflow.com/a/46428962
 let oldhref = document.location.href;
+// global lists other scripts can hook into to add their own mutation change events and href change events
+const windowLoadEvents = [];
+const mutationChangeEvents = [addChangeEventListeners, addButtonEventListeners];
+const hrefChangeEvents = [sendCookies];
 window.addEventListener("load", () => {
+    windowLoadEvents.forEach((fn) => {
+        fn();
+    });
+
     // track when the href gets changed
     const domObserver = new MutationObserver((mutations) => {
         mutations.forEach(mutation => {
-            // can't really be precise because grandchildren
-            addChangeEventListeners();
-            addButtonEventListeners();
+            // can't really be precise on the event listeners because grandchildren
+            mutationChangeEvents.forEach((fn) => {
+                fn(mutation); // give it the mutation if it wants
+            })
 
             if (document.location.href != oldhref) {
                 // send cookies (and href) if the href changed
                 oldhref = document.location.href;
-                sendCookies();
+                hrefChangeEvents.forEach((fn) => {
+                    fn(document.location); // give it the location if it wants it
+                });
             }
         });
     });

